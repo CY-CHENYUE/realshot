@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#ffffff">
+ <title>REALSHOT · 军械库</title>
+ <link rel="stylesheet" href="/src/armory.css">
+ <script type="importmap">{"imports":{"three":"/three/build/three.module.js","three/addons/":"/three/examples/jsm/"}}</script>
+</head>
+<body data-state="loading">
+ <div id="ghost" aria-hidden="true"></div>
+ <div id="stage"><canvas id="view" aria-label="军械库：雪线行动的三把武器"></canvas></div>
+ <svg id="notes" aria-hidden="true"></svg>
+ <div id="card" aria-live="polite">
+  <div id="slot"></div>
+  <h1 id="name"></h1>
+  <p id="full"></p>
+  <p id="line"></p>
+  <dl id="specs"></dl>
+  <button id="strip" type="button" hidden><i></i>拆解演示<b>T</b></button>
+ </div>
+ <nav id="tabs" aria-label="武器"></nav>
+ <div id="mark">REALSHOT<span>雪线行动 · 军械库</span></div>
+ <div id="hint"><b>1 2 3</b>选择<b>拖动</b>转动<b>空格</b>轮播<span id="reelhint"><b>T</b>拆解</span></div>
+ <div id="load">正在取出武器</div>
+ <script type="module" src="/src/armory.mjs"></script>
+</body>
+</html>

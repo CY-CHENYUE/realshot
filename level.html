@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+ <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0e1418">
+ <title>REALSHOT · 雪线行动</title>
+ <link rel="stylesheet" href="/src/level.css">
+ <script type="importmap">{"imports":{"three":"/three/build/three.module.js","three/addons/":"/three/examples/jsm/"}}</script>
+</head>
+<body data-screen="loading">
+ <canvas id="view" aria-label="雪线行动 3D 关卡"></canvas>
+ <div id="bars" aria-hidden="true"><i></i><i></i></div>
+ <div id="hud" hidden>
+  <div id="compass" aria-hidden="true"><div id="compass-strip"></div><i class="needle"></i></div>
+  <div id="objective"><b id="obj-label">救援信标</b><span id="obj-dist">—</span></div>
+  <div id="section"><span id="section-cn">松林雪谷</span><small id="section-en">PINE VALLEY</small></div>
+  <div id="threat" hidden><span>敌军</span><b id="threat-n">0</b></div>
+  <div id="perch" hidden><span>制高点</span><em>×1.5</em><span>压制</span><b id="perch-n">0</b></div>
+  <div id="palm" hidden><span>天掌</span><i><u id="palm-bar"></u></i><b id="palm-t">12.0</b><small>左键 · 向准星处拍下冰掌</small><em>击倒 <b id="palm-n">0</b></em></div>
+  <div id="flyveil" aria-hidden="true"></div>
+  <div id="strikeveil" aria-hidden="true"></div>
+  <div id="feed" aria-live="polite"></div>
+  <div id="reticle" aria-hidden="true"><i></i><i></i><i></i><i></i><b></b></div>
+  <div id="hitmark" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <div id="dmg" aria-hidden="true"></div>
+  <div id="prompt" hidden><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15" class="track"/><circle id="prompt-ring" cx="18" cy="18" r="15" class="ring"/></svg><div><span id="prompt-text">按住 <kbd>E</kbd> 打开空投</span><small id="prompt-loot"></small></div></div>
+  <div id="banner"><b id="banner-title"></b><span id="banner-sub"></span></div>
+  <div id="combo" aria-live="off"><b id="combo-n">0</b><span id="combo-label">连斩</span><div class="cbar"><i id="combo-bar"></i></div></div>
+  <div id="hold" hidden><span id="hold-label">坚守信标 · 救援直升机接近中</span><div class="bar"><i id="hold-fill"></i></div><b id="hold-time">36</b></div>
+  <div id="boss" hidden><div class="bname"><b>冰壳母舰</b><small id="boss-hint"></small></div><div class="bar"><i id="boss-lag"></i><i id="boss-fill"></i><em style="left:60%"></em><em style="left:30%"></em></div></div>
+  <div id="cues" aria-hidden="true"></div>
+  <div id="vitals"><div class="vlabel"><span>生命</span><b id="hp-num">100</b></div><div class="hpbar"><i id="hp-fill"></i><i id="hp-lag"></i></div></div>
+  <div id="weapon">
+   <div id="slots"></div>
+   <div class="wline"><div class="wname"><b id="w-name">PAC-9</b><small id="w-mode">AUTO</small></div><div class="ammo"><strong id="w-mag">30</strong><span>/</span><em id="w-res">150</em></div></div>
+   <div id="reload-bar"><i></i></div>
+  </div>
+  <div id="vehicle"><div class="vline"><div class="vname"><b>雪地车</b><small><kbd>E</kbd> 下车</small></div><div class="vspeed"><em id="veh-run"></em><strong id="veh-speed">0</strong><span>km/h</span></div></div><div class="vbar"><i id="veh-hp"></i></div></div>
+  <div id="scope" hidden></div>
+  <div id="vignette"></div>
+  <div id="whiteout"></div>
+ </div>
+
+ <section id="cine" hidden><video id="cine-video" playsinline preload="none" disablepictureinpicture></video><div class="cine-title"><p>OPERATION SNOWLINE · 群峰救援线</p><h2>雪线行动</h2></div><small class="cine-skip"><kbd>空格</kbd> 跳过</small></section>
+ <div id="comms" aria-live="polite"></div>
+
+ <section id="title" class="screen" hidden>
+  <div class="title-copy">
+   <p class="eyebrow">OPERATION SNOWLINE · 群峰救援线</p>
+   <h1>雪线行动</h1>
+   <p class="intro">冰壳步兵正成群地从雪下钻出，无人机封锁了天空。<br>独自杀穿四段山谷，在尽头点亮救援信标，并击落前来摧毁它的母舰。</p>
+   <button id="start" class="primary" disabled><span id="load-label">载入中</span></button>
+   <div class="keys"><span><kbd>WASD</kbd> 移动</span><span><kbd>Shift</kbd> 冲刺</span><span><kbd>Space</kbd> 跳跃</span><span><kbd>鼠标</kbd> 视角</span><span><kbd>左键</kbd> 射击</span><span><kbd>右键</kbd> 瞄准</span><span><kbd>R</kbd> 装填</span><span><kbd>1-3</kbd>/<kbd>Q</kbd>/滚轮 换武器</span><span><kbd>4</kbd> 天锤导弹（击杀充能）</span><span><kbd>E</kbd> 空投 / 上下雪地车</span></div>
+   <p class="hint">连斩越多，天锤充能越快 · 射击山壁上的雪檐引发雪崩 · 开雪地车撞穿人群 · 留意天上的金色徽章。</p>
+   <nav class="links"><a id="replay-intro" href="#" hidden>开场简报 ▶</a><a href="/armory.html" target="_blank" rel="noopener">军械库 ↗</a></nav>
+  </div>
+ </section>
+ <section id="pause" class="screen dim" hidden><div class="sheet"><p class="eyebrow">PAUSED</p><h2>行动暂停</h2><button id="resume" class="primary"><span>继续</span></button><button id="restart" class="ghost">从头开始</button><label class="vol">音量 <input id="volume" type="range" min="0" max="100" value="70"></label></div></section>
+ <section id="down" class="screen dim" hidden><div class="sheet"><p class="eyebrow">DOWN</p><h2>你倒下了</h2><p id="down-copy">从最近的检查点继续。</p><button id="respawn" class="primary"><span>从检查点继续</span></button></div></section>
+ <section id="won" class="screen dim" hidden><div class="sheet"><p class="eyebrow">MISSION COMPLETE</p><h2>信标已点亮</h2><p>救援直升机已锁定你的位置。</p><div class="stats"><div><b id="st-time">0:00</b><span>用时</span></div><div><b id="st-kills">0</b><span>击杀</span></div><div><b id="st-combo">0</b><span>最高连斩</span></div><div><b id="st-acc">0%</b><span>命中率</span></div><div><b id="st-score">0</b><span>得分</span></div></div><button id="again" class="primary"><span>再来一次</span></button></div></section>
+ <div id="fatal" hidden><h2>关卡未能载入</h2><p></p></div>
+ <script type="module" src="/src/level.mjs"></script>
+</body>
+</html>

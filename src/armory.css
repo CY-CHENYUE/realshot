@@ -1,0 +1,61 @@
+/* RealShot r28 · armory showcase. White on purpose: on the transparent box screen white is the see-through part, so the
+   weapons hang in the box. Ink and one orange, the stripe colour the weapons themselves carry.
+   Layers, back to front: the page (white) · the big name · the weapons (canvas with alpha) · callouts · card and tabs. */
+:root{--ink:#10161b;--dim:rgba(16,22,27,.56);--faint:rgba(16,22,27,.14);--hot:#e2570d;
+ --font:"DIN Alternate","Avenir Next Condensed","Bahnschrift","PingFang SC","Hiragino Sans GB",system-ui,sans-serif}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:#fff;color:var(--ink);font-family:var(--font);user-select:none;-webkit-user-select:none}
+#ghost{position:fixed;right:-1vw;top:7vh;font-size:44vh;line-height:1;font-weight:700;letter-spacing:-.02em;white-space:nowrap;color:var(--ink);opacity:0;pointer-events:none;will-change:opacity,transform}
+#stage{position:fixed;inset:0;transform-origin:top left;overflow:hidden}
+#view{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab}
+#view:active{cursor:grabbing}
+body[data-surface] #view{cursor:none}
+#notes{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+#notes .lead{fill:none;stroke:var(--ink);stroke-width:1;opacity:.62;vector-effect:non-scaling-stroke}
+#notes .dot{fill:#fff;stroke:var(--hot);stroke-width:1.6}
+#notes .nt{font:600 clamp(11px,1.5vh,17px)/1 var(--font);letter-spacing:.2em;fill:var(--ink)}
+#notes .ns{font:400 clamp(10px,1.25vh,14px)/1 var(--font);letter-spacing:.16em;fill:var(--dim)}
+#card{position:fixed;left:5vw;top:11vh;width:min(26vw,400px);pointer-events:none;will-change:opacity,transform}
+#slot{font-size:clamp(12px,1vw,15px);letter-spacing:.32em;color:var(--hot)}
+#name{margin:.14em 0 0;font-size:clamp(46px,6vw,112px);line-height:.92;font-weight:700;letter-spacing:.01em}
+#full{margin:.5em 0 0;font-size:clamp(16px,1.4vw,24px);letter-spacing:.3em;color:var(--ink)}
+#line{margin:.7em 0 0;font-size:clamp(12px,.9vw,15px);letter-spacing:.14em;color:var(--dim)}
+#specs{margin:2em 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.2em 1.6em}
+#specs div{border-top:1px solid var(--faint);padding-top:.55em}
+#specs dt{font-size:clamp(11px,.8vw,13px);letter-spacing:.24em;color:var(--dim)}
+#specs dd{margin:.15em 0 0;font-size:clamp(22px,2.2vw,38px);font-weight:700;line-height:1}
+#specs dd small{font-size:.42em;font-weight:400;letter-spacing:.14em;color:var(--dim);margin-left:.4em}
+/* the teardown film of the weapon in front: a button under its figures, and the film itself over the row (the same light
+   backdrop, so on the box screen the parts hang in the box as the weapons do) */
+#strip{all:unset;display:none;margin-top:2.2em;pointer-events:auto;cursor:pointer;font-size:clamp(12px,.95vw,15px);letter-spacing:.24em;color:var(--ink);border:1px solid var(--ink);padding:.85em 1.3em .8em 1.1em;transition:background .2s,color .2s}
+#strip i{display:inline-block;width:0;height:0;border-left:.62em solid var(--hot);border-top:.4em solid transparent;border-bottom:.4em solid transparent;margin-right:.95em;vertical-align:-.02em}
+#strip b{font-weight:400;color:var(--dim);margin-left:1.4em;letter-spacing:.1em;transition:color .2s}
+#strip:hover{background:var(--ink);color:#fff}#strip:hover b{color:rgba(255,255,255,.6)}
+#strip:focus-visible{outline:2px solid var(--hot);outline-offset:4px}
+body[data-reel="1"] #strip:not([hidden]){display:inline-block}
+#reelhint{display:none}body[data-reel="1"] #reelhint{display:inline}
+#film{position:absolute;inset:0;z-index:5;background:linear-gradient(#fff,#eef1f4);opacity:0;pointer-events:none;transition:opacity .45s;cursor:pointer}
+#film video{width:100%;height:100%;object-fit:contain;display:block}
+#film span{position:absolute;right:4vw;top:6vh;font-size:clamp(10px,.75vw,12px);letter-spacing:.2em;color:var(--dim)}
+#film span b{font-weight:600;color:var(--ink);margin-right:.6em}
+body[data-film="1"] #film{opacity:1;pointer-events:auto}
+/* the film carries its own title and figures: the page's go out under it */
+body[data-film="1"] :is(#card,#tabs,#mark,#hint,#ghost,#notes){opacity:0!important;transition:opacity .3s}
+body[data-text="0"] #film span{display:none}
+#tabs{position:fixed;left:5vw;bottom:6vh;display:flex;gap:2vw}
+#tabs button{all:unset;position:relative;cursor:pointer;font-size:clamp(12px,.95vw,15px);letter-spacing:.2em;color:var(--dim);padding:.8em 0 .5em;border-top:2px solid var(--faint);min-width:7.5vw;transition:color .25s}
+#tabs button b{color:inherit;font-weight:400;margin-right:.9em;opacity:.7}
+/* the bar on the weapon in front fills while it stays: when it is full the row moves on */
+#tabs button i{position:absolute;left:0;right:0;top:-2px;height:2px;background:var(--hot);transform:scaleX(0);transform-origin:left;display:none}
+#tabs button[aria-current="true"]{color:var(--ink)}
+#tabs button[aria-current="true"] i{display:block}
+#tabs button:focus-visible{outline:2px solid var(--hot);outline-offset:4px}
+#mark{position:fixed;right:4vw;top:6vh;text-align:right;font-size:clamp(12px,1vw,15px);letter-spacing:.42em;font-weight:700}
+#mark span{display:block;margin-top:.5em;font-weight:400;letter-spacing:.24em;color:var(--dim)}
+#hint{position:fixed;right:4vw;bottom:6vh;font-size:clamp(10px,.75vw,12px);letter-spacing:.2em;color:var(--dim);padding-bottom:.5em}
+#hint b{font-weight:600;color:var(--ink);margin:0 .6em 0 1.6em}
+#load{position:fixed;inset:0;display:grid;place-items:center;background:#fff;color:var(--dim);letter-spacing:.4em;font-size:14px;transition:opacity .5s}
+body[data-state="ready"] #load{opacity:0;pointer-events:none}
+/* ?text=0 and the box surface: nothing but the weapons */
+body[data-text="0"] #card,body[data-text="0"] #tabs,body[data-text="0"] #mark,body[data-text="0"] #hint,body[data-text="0"] #ghost,body[data-text="0"] #notes{display:none}
+body[data-capture="1"] *{transition:none!important}

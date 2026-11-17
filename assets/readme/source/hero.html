@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>RealShot 雪线行动</title>
+<style>
+html,body{margin:0;padding:0}
+body{width:1200px;height:840px;background:#f3f5f7;position:relative;overflow:hidden;font-family:"PingFang SC","Hiragino Sans GB","Noto Sans CJK SC","Microsoft YaHei",sans-serif;color:#1c2026}
+.mono{font-family:"SF Mono",Menlo,Consolas,monospace}
+.eyebrow{position:absolute;left:48px;top:40px;font:600 18px/1 "Helvetica Neue",Arial,sans-serif;letter-spacing:.34em;color:#d9652b}
+h1{position:absolute;left:44px;top:66px;margin:0;font-size:92px;line-height:1.1;font-weight:600;letter-spacing:.08em}
+.lead{position:absolute;left:560px;top:52px;width:592px;margin:0;font-size:25px;line-height:1.56;color:#3b424c}
+.lead b{color:#1c2026;font-weight:600}
+.shot{position:absolute;overflow:hidden;background:#dfe4ea}
+.shot img{position:absolute;display:block}
+.tag{position:absolute;left:0;bottom:0;padding:9px 16px 9px 16px;background:#11151a;color:#fff;font-size:20px;line-height:1.2;letter-spacing:.04em}
+.tag i{font-style:normal;color:#ff9a5c;font-weight:600;margin-right:10px;font-family:"Helvetica Neue",Arial,sans-serif}
+#game{left:0;top:190px;width:1200px;height:410px}
+#game img{width:1200px;left:0;top:-110px}
+#box{left:0;top:608px;width:636px;height:232px}
+#box img{width:636px;left:0;top:-22px}
+#cli{position:absolute;left:644px;top:608px;width:556px;height:232px;background:#11151a;color:#e8ecf1;overflow:hidden}
+#cli pre{position:absolute;left:24px;top:22px;margin:0;font-size:19px;line-height:1.55;color:#e8ecf1}
+#cli pre span{color:#7d8894}
+#cli pre em{font-style:normal;color:#ff9a5c}
+#cli .model{position:absolute;right:0;top:0;width:168px;height:232px;overflow:hidden;background:#f3f5f7}
+#cli .model img{position:absolute;height:196px;left:50%;top:18px;transform:translateX(-50%)}
+#cli .tag{background:#11151a}
+</style>
+</head>
+<body>
+<div class="eyebrow">REALSHOT · OPERATION SNOWLINE</div>
+<h1>雪线行动</h1>
+<p class="lead">浏览器里的第一人称射击游戏。<b>17 个模型</b>由一条命令调用群核 Lux3D 生成，画面还能放进一台 <b>3D 打印的透明屏盒子</b>。</p>
+<div class="shot" id="game"><img src="../screens/game-crowd.jpg" alt=""><div class="tag"><i>01</i>游戏 · 实机画面</div></div>
+<div class="shot" id="box"><img src="../screens/box-desk.jpg" alt=""><div class="tag"><i>03</i>透明屏盒子 · 实拍</div></div>
+<div id="cli">
+<pre class="mono"><span>$</span> aholo lux3d text-to-3d \
+    --prompt-file trooper.txt \
+    --face-count 50000 \
+    --download --json
+<em>任务 8083319 · 368 秒</em></pre>
+<div class="model"><img src="../screens/lux3d-trooper-still.png" alt=""></div>
+<div class="tag"><i>02</i>aholo-cli · 一条命令生成模型</div>
+</div>
+</body>
+</html>
