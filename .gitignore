@@ -20,8 +20,7 @@ assets/reload-empty.bin.gz
 
 # README review artefacts (the hero image itself is kept)
 assets/readme/page/
-assets/readme/render/*
-!assets/readme/render/hero.png
+assets/readme/render/
 
 # Earlier game modes (kept locally, not part of the published game)
 /index.html
