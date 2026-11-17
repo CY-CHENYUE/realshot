@@ -111,3 +111,10 @@ aholo-cli 的安装和全部命令见[它自己的仓库](https://github.com/CY-
 - [素材来源与许可](THIRD_PARTY_NOTICES.md)
 
 作者：CY-CHENYUE
+
+## 关注公众号
+
+<div align="center">
+  <p>扫码关注公众号，获取更新与交流反馈</p>
+  <img src="assets/wechat-qr.jpg" alt="CY-CHENYUE 的微信公众号二维码，用于获取 RealShot 更新与交流反馈" width="200">
+</div>
