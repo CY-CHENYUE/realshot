@@ -7,7 +7,7 @@ url.json
 verification/
 
 # Not redistributable: the PAC-9 carbine, gloves, sleeves and their motions.
-# The game falls back to a stand-in carbine when these are absent (src/viewmodel.mjs).
+# When these are absent the game uses the carbine and arm in assets/weapons (src/viewmodel.mjs).
 assets/reference-viewmodel.json.gz
 assets/pac9-detail.json
 assets/provenance.json

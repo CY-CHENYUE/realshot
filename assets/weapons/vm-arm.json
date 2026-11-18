@@ -1,0 +1,1 @@
+{"name":"vm-arm","scale":1,"source":"pac9-public-20261118 / pac9_arm.py","parts":[{"part":"arm","tris":22600,"vertices":14719,"min":[-0.328,-0.3544,-0.3676],"max":[0.0462,0.0439,0.0576],"position":0,"normal":176628,"uv":220788,"index":338540,"wide":false}],"bytes":474140}

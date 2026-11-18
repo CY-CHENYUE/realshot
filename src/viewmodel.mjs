@@ -1,4 +1,5 @@
 import * as T from 'three';
+import {loadWeaponModels} from './level-arms.mjs';
 
 async function unpack(url,type){
  const response=await fetch(url);if(!response.ok)throw new Error(`装备文件未能读取：${url}`);
@@ -73,10 +74,74 @@ if(uZoneDebug>.5){vec3 hz=fbHz;reflectedLight.directDiffuse=reflectedLight.indir
  m.needsUpdate=true;
 }
 
-// The carbine, gloves, sleeves and their motions are not redistributable, so the public repository does not carry them
-// (see THIRD_PARTY_NOTICES.md). When they are absent the game still runs: this stand-in carbine takes their place. It
-// has the same frame as the real one (bore along -z through the origin, pistol grip near z = +.05, muzzle at z = -.531)
-// and the same interface, without hands; reload and recoil are a simple dip and kick of the whole weapon.
+// The muzzle, its flash and its light: the same for every carbine this module can return.
+function muzzleRig(root){
+ const muzzle=new T.Object3D();muzzle.position.set(0,0,-.531);root.add(muzzle);
+ const flash=new T.Group();muzzle.add(flash);flash.visible=false;
+ for(let i=0;i<2;i++){
+  const length=i?.060:.038,geometry=new T.ConeGeometry(i?.017:.010,length,5);geometry.rotateX(-Math.PI/2);geometry.translate(0,0,-length*.5);
+  const mesh=new T.Mesh(geometry,new T.MeshBasicMaterial({color:i?'#ffad55':'#fff0c4',transparent:true,opacity:i?.55:.86,depthWrite:false}));mesh.rotation.z=i*.8;flash.add(mesh);
+ }
+ const light=new T.PointLight('#ffa657',0,.9,2);muzzle.add(light);
+ return {muzzle,flash,light};
+}
+// PAC-9 as the public repository carries it: our own model (assets/weapons/vm-carbine.* and vm-arm.*, built part by part and
+// baked into one set of maps each; THIRD_PARTY_NOTICES.md). The carbine, gloves, sleeves and motions the game was first
+// built round are a privately supplied asset that cannot be redistributed (THIRD_PARTY_NOTICES.md); when they are absent
+// this one takes their place. It has the same frame (bore along -z through the origin, pistol grip near z = +.05, muzzle
+// at z = -.531, the sight's axis .069 above the bore) and the same interface. Its motions are made here: recoil is a
+// kick of the whole weapon; on reload the carbine cants so its well shows, the magazine (its own piece) drops out, a
+// fresh one comes up and seats, and the carbine comes back. After an empty magazine it ends with the bolt going home.
+// The left arm that holds the handguard (vm-arm.*: glove, cuff and sleeve) is our own model as well; it lets go for the
+// magazine and comes back. The right hand is never in the frame.
+const CARBINE='vm-carbine',ARM='vm-arm';
+async function carbine(onProgress){
+ const {[CARBINE]:M}=await loadWeaponModels('assets/weapons/',[CARBINE]);onProgress(1,3);
+ const relief=await new T.TextureLoader().loadAsync(`assets/weapons/${CARBINE}-relief.jpg`).catch(()=>null);
+ if(relief){relief.flipY=false;relief.colorSpace=T.NoColorSpace;relief.anisotropy=8;M.material.normalMap=relief;M.material.normalScale.set(1,1);}
+ M.material.name='carbine / baked';onProgress(2,3);
+ const host=new T.Group(),root=new T.Group();host.add(root);
+ const piece=(geometry,material=M.material)=>{const o=new T.Mesh(geometry,material);o.frustumCulled=false;return o;};
+ root.add(piece(M.parts.body));const mag=new T.Group();if(M.parts.mag)mag.add(piece(M.parts.mag));root.add(mag);
+ // the sight's glass (leaning a little, so it catches the sky) and the dot on its axis: the aiming eye sits on that axis
+ const glass=new T.Mesh(new T.PlaneGeometry(.0326,.0274),new T.MeshPhysicalMaterial({name:'carbine / sight glass',color:'#bfe6dc',roughness:.04,metalness:0,transparent:true,opacity:.14,depthWrite:false,envMapIntensity:1.6}));
+ glass.position.set(0,.0699,-.067);glass.rotation.x=-.09;glass.frustumCulled=false;root.add(glass);
+ const dot=new T.Mesh(new T.CircleGeometry(.00042,12),new T.MeshBasicMaterial({name:'carbine / sight dot',color:'#ff2a1a',toneMapped:false,depthWrite:false}));dot.position.set(0,.069,-.0668);dot.renderOrder=1;dot.frustumCulled=false;root.add(dot);
+ // the arm: the game finds arms by this material name (they stay when another weapon takes the carbine's place)
+ const A=await loadWeaponModels('assets/weapons/',[ARM]).then(m=>m[ARM]).catch(()=>null),arm=new T.Group();arm.name='left arm';
+ if(A){const n=await new T.TextureLoader().loadAsync(`assets/weapons/${ARM}-relief.jpg`).catch(()=>null);
+  if(n){n.flipY=false;n.colorSpace=T.NoColorSpace;n.anisotropy=8;A.material.normalMap=n;}
+  A.material.name='glove_fabric';A.material.envMapIntensity=.8;arm.add(piece(A.parts.arm,A.material));root.add(arm);}
+ const {muzzle,flash,light}=muzzleRig(root);
+ const DURATION={recoil:.11,reload:1.9,'reload-empty':2.5};let action=null,actionTime=0;
+ const ss=(a,b,x)=>T.MathUtils.smoothstep(x,a,b);
+ const rest=()=>{root.position.set(0,0,0);root.rotation.set(0,0,0);mag.position.set(0,0,0);mag.visible=true;arm.position.set(0,0,0);};
+ const pose=(name,time)=>{const t=Math.min(DURATION[name],Math.max(0,time));rest();
+  if(name==='recoil'){const r=(1-t/DURATION.recoil)**2;root.position.z=.014*r;root.rotation.x=.02*r;return;}
+  // cant: muzzle up, the left side turned to the eye, the whole carbine a little lower and nearer the middle
+  const cant=ss(0,.30,t)*(1-ss(1.40,1.82,t));
+  root.rotation.set(.26*cant,.12*cant,-.58*cant);root.position.set(-.03*cant,-.02*cant,.015*cant);
+  // the magazine: out and down (it falls faster as it goes), gone, a fresh one up, the last centimetre pushed home
+  const out=ss(.28,.58,t),up=ss(.86,1.20,t),home=ss(1.20,1.27,t),drop=t<.72?.30*out*out:up<1?.012+.288*(1-up)*(1-up):.012*(1-home);
+  mag.position.set(0,-drop,-drop*.06);mag.visible=!(t>.58&&t<.86);
+  // the left hand lets go, takes the old magazine away below the frame, and is back on the handguard as the carbine levels
+  const away=ss(.08,.34,t)*(1-ss(1.30,1.72,t));arm.position.set(-.02*away,-.30*away,.15*away);
+  // seating the magazine jolts the carbine up; after an empty magazine the bolt goes home with a short tug forward
+  const seat=Math.sin(Math.PI*ss(1.20,1.36,t));root.position.y+=.006*seat;root.rotation.x+=.02*seat;
+  if(name==='reload-empty'){const tug=Math.sin(Math.PI*ss(1.92,2.24,t));root.position.z-=.012*tug;root.rotation.z+=.07*tug;root.rotation.x+=.025*tug;}
+ };
+ onProgress(3,3);
+ return {host,root,muzzle,flash,light,basePose:{p:new T.Vector3(),q:new T.Quaternion()},
+  play(name){if(!DURATION[name])return;action=name;actionTime=0;pose(name,0);},
+  update(dt){if(!action)return;actionTime+=dt;pose(action,actionTime);if(actionTime>=DURATION[action]){action=null;rest();}},
+  showHands(value){arm.visible=value;},reset(){action=null;rest();},get action(){return action;},get actionTime(){return actionTime;},handCount:A?1:0,source:'PAC-9 carbine and left arm, own models (public repository)',standIn:true,
+  // for the armory: the model's kind and material (it gives generated weapons a finer colour map and a grain), and where its callouts point
+  model:{kind:CARBINE,material:M.material},
+  sample(name,time){if(DURATION[name])pose(name,time);}};
+}
+
+// The last resort, if the carbine's own files cannot be read either: a carbine put together from boxes and tubes, in the
+// same frame and with the same interface; reload and recoil are a simple dip and kick of the whole weapon.
 function standIn(onProgress){
  const host=new T.Group(),root=new T.Group();host.add(root);
  const mat=(name,color,roughness,metalness,extra={})=>new T.MeshStandardMaterial({name,color,roughness,metalness,...extra});
@@ -97,13 +162,7 @@ function standIn(onProgress){
  box([.028,.115,.046],tan,[0,-.112,-.07],.18);            // magazine
  box([.030,.085,.038],polymer,[0,-.092,.03],-.32);        // pistol grip
  tube(.015,.09,steel,[0,-.002,.085]);                     // buffer tube
- const muzzle=new T.Object3D();muzzle.position.set(0,0,-.531);root.add(muzzle);
- const flash=new T.Group();muzzle.add(flash);flash.visible=false;
- for(let i=0;i<2;i++){
-  const length=i?.060:.038,geometry=new T.ConeGeometry(i?.017:.010,length,5);geometry.rotateX(-Math.PI/2);geometry.translate(0,0,-length*.5);
-  const mesh=new T.Mesh(geometry,new T.MeshBasicMaterial({color:i?'#ffad55':'#fff0c4',transparent:true,opacity:i?.55:.86,depthWrite:false}));mesh.rotation.z=i*.8;flash.add(mesh);
- }
- const light=new T.PointLight('#ffa657',0,.9,2);muzzle.add(light);
+ const {muzzle,flash,light}=muzzleRig(root);
  const DURATION={recoil:.11,reload:1.9,'reload-empty':2.5};let action=null,actionTime=0;
  const rest=()=>{root.position.set(0,0,0);root.rotation.set(0,0,0);};
  const pose=(name,time)=>{const k=Math.min(1,Math.max(0,time/DURATION[name]));rest();
@@ -113,14 +172,17 @@ function standIn(onProgress){
  return {host,root,muzzle,flash,light,basePose:{p:new T.Vector3(),q:new T.Quaternion()},
   play(name){if(!DURATION[name])return;action=name;actionTime=0;pose(name,0);},
   update(dt){if(!action)return;actionTime+=dt;pose(action,actionTime);if(actionTime>=DURATION[action]){action=null;rest();}},
-  showHands(){},reset(){action=null;rest();},get action(){return action;},get actionTime(){return actionTime;},handCount:0,source:'stand-in carbine (public repository)',standIn:true,
+  showHands(){},reset(){action=null;rest();},get action(){return action;},get actionTime(){return actionTime;},handCount:0,source:'box carbine (last resort)',standIn:true,
   sample(name,time){if(DURATION[name])pose(name,time);}};
 }
 
-// The carbine, gloves and sleeves are a privately supplied asset (not in the public repository). Animations include
+// The carbine, gloves and sleeves the game was first built round are a privately supplied asset (not in the public
+// repository); without them the repository's own carbine is used. Their animations include
 // vertex deformation for fingers and sleeves; transform-only export loses those poses.
 export async function loadViewmodel(onProgress=()=>{}){
- if((await fetch('assets/reference-viewmodel.json.gz',{method:'HEAD'})).status===404){console.info('RealShot: carbine and hand assets are not present; using the stand-in carbine.');return standIn(onProgress);}
+ if((await fetch('assets/reference-viewmodel.json.gz',{method:'HEAD'})).status===404){
+  try{return await carbine(onProgress);}catch(error){console.warn('RealShot: the carbine model could not be read; using the box carbine.',error);return standIn(onProgress);}
+ }
  const data=await unpack('assets/reference-viewmodel.json.gz','json');
  const root=await new T.ObjectLoader().parseAsync(data);const nodes=[];root.traverse(o=>nodes.push(o));
  const detail=await fetch('assets/pac9-detail.json').then(r=>r.json());

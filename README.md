@@ -4,11 +4,11 @@
 
 《雪线行动》是一个在浏览器里运行的第一人称射击游戏：独自穿过四段雪山山谷，点亮尽头的救援信标，再击落赶来摧毁它的母舰。游戏里的敌人、载具、场景道具和两把重武器来自 17 个群核 Lux3D 生成的模型，每个模型都是 Agent 运行一条 [aholo-cli](https://github.com/CY-CHENYUE/aholo-cli) 命令得到的。同一个画面还能放进一台 3D 打印的透明屏盒子，盒子里的实物站在画面后面。
 
-**[在线试玩](https://cy-chenyue.github.io/realshot/)** · **[项目报告书（飞书，含完整视频和全部素材）](https://ultraway.feishu.cn/wiki/MDrzwfGHriHIpSkJFx7cWoMnnlc)** · **[aholo-cli 源码](https://github.com/CY-CHENYUE/aholo-cli)**
+**[在线试玩](https://aiotwan.com/realshot/)** · **[项目报告书（飞书，含完整视频和全部素材）](https://ultraway.feishu.cn/wiki/MDrzwfGHriHIpSkJFx7cWoMnnlc)** · **[aholo-cli 源码](https://github.com/CY-CHENYUE/aholo-cli)**
 
 ## 三件成果
 
-- **游戏**：《雪线行动》，四段山谷、三种冰壳步兵和无人机、三把武器、可驾驶的雪地车、空中支援和一场 Boss 战，用 three.js 编写。可以[在线试玩](https://cy-chenyue.github.io/realshot/)，源码就是本仓库，也可以[在自己电脑上运行](#三步运行)。
+- **游戏**：《雪线行动》，四段山谷、三种冰壳步兵和无人机、三把武器、可驾驶的雪地车、空中支援和一场 Boss 战，用 three.js 编写。可以[在线试玩](https://aiotwan.com/realshot/)，源码就是本仓库，也可以[在自己电脑上运行](#三步运行)。
 - **命令行工具**：aholo-cli，23 条命令封装群核 Lux3D 的文生 3D、图生 3D、材质迁移、绑骨、导出和下载，输出 JSON，Agent 可以直接调用；MIT 开源。源码在 [github.com/CY-CHENYUE/aholo-cli](https://github.com/CY-CHENYUE/aholo-cli)。
 - **透明屏盒子**：3D 打印的外壳（230 × 220 × 250 mm）装一块 1920 × 1080 的透明屏，屏幕上白色的地方透光，能看见盒子里的实物。[实拍在下面](#透明屏盒子)。
 
@@ -30,9 +30,9 @@
 
 ## 在线试玩
 
-用电脑上的 Chrome 或 Edge 打开 **<https://cy-chenyue.github.io/realshot/>**，等载入完成后点“开始行动”，不用安装任何东西。军械库页在 <https://cy-chenyue.github.io/realshot/armory.html>。
+用电脑上的 Chrome 或 Edge 打开 **<https://aiotwan.com/realshot/>**，等载入完成后点“开始行动”，不用安装任何东西。军械库页在 <https://aiotwan.com/realshot/armory.html>。
 
-第一次打开要下载约 64 MB 的模型和声音，载入画面会显示已下载多少。网站放在 GitHub Pages 上，如果你的网络打开它很慢或打不开，请用下面的方法在本机运行，内容完全一样。操作按键见下一节的表格。
+第一次打开要下载约 95 MB 的模型、动作和声音，载入画面会显示已下载多少。也可以用下面的方法把源码下载到自己电脑上运行。操作按键见下一节的表格。
 
 ## 三步运行
 
@@ -105,11 +105,11 @@ aholo-cli 的安装和全部命令见[它自己的仓库](https://github.com/CY-
 | `assets/` | 模型、贴图、声音、开场和结局影片、指挥员语音 |
 | `tests/` | `npm test` 运行的规则和数据测试，共 146 个 |
 | `dev-crowd.html`、`dev-props.html` | 开发时查看敌人和道具模型的页面 |
-| `.github/workflows/pages.yml` | 每次推送后运行测试，再把游戏发布到在线试玩的地址 |
+| `.github/workflows/test.yml` | 每次推送后运行语法检查和测试 |
 
 ## 需要知道的边界
 
-- **PAC-9 步枪和双手不在仓库里。** 它们是没有再分发授权的私有素材，上面截图里能看到，但文件没有提交。克隆下来的游戏和在线试玩的版本都会自动换成一把用代码拼出来的替代步枪，没有双手；其余内容不变。
+- **下载到本机运行时，PAC-9 步枪和左手用的是仓库里的这一套模型**（`assets/weapons/vm-carbine*`、`vm-arm*`），是本项目自己制作的。上面截图里的步枪、双手和换弹动作是另一套素材，文件不随仓库分发；两者的数值、瞄准和玩法相同，本机版只有左手，换弹是左手离开护木、整把枪下沉再抬起。
 - **开场、结局影片和指挥员语音是 AI 生成的**，来源写在 `assets/cine/NOTICE.md` 和 `assets/voice/NOTICE.md`。
 - **测试只覆盖规则和数据。** `npm test` 的 146 个测试全部通过，检查的是武器数值、敌人波次、关卡数据这类逻辑；画面和手感没有自动测试。
 - **还没有选定开源许可。** 仓库里没有 LICENSE 文件；第三方素材和生成素材各自的来源与许可见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
@@ -117,7 +117,7 @@ aholo-cli 的安装和全部命令见[它自己的仓库](https://github.com/CY-
 
 ## 链接
 
-- [在线试玩](https://cy-chenyue.github.io/realshot/)：浏览器里直接玩，需要电脑、键盘和鼠标
+- [在线试玩](https://aiotwan.com/realshot/)：浏览器里直接玩，需要电脑、键盘和鼠标
 - [项目报告书（飞书）](https://ultraway.feishu.cn/wiki/MDrzwfGHriHIpSkJFx7cWoMnnlc)：完整视频、创意、制作过程、迭代对比和全部素材
 - [aholo-cli](https://github.com/CY-CHENYUE/aholo-cli)：调用群核 Lux3D 的命令行工具
 - [素材来源与许可](THIRD_PARTY_NOTICES.md)
