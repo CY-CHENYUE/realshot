@@ -1,10 +1,12 @@
 # 素材来源与许可
 
-本仓库的代码和未在下面单独列出的素材属于本项目。下面按类别列出第三方素材、生成素材和没有放进仓库的素材。
+本仓库的代码和未在下面单独列出的素材属于本项目。下面按类别列出外部素材、生成素材和第三方素材。
 
-## 没有放进仓库的素材
+## PAC-9 步枪和双手
 
-PAC-9 步枪、手套、袖子和它们的开火、换弹动作是私有素材，没有再分发授权，所以不在仓库里（`.gitignore` 里列了文件名）。缺少这些文件时，游戏使用仓库里本项目自己制作的 PAC-9 步枪和左手模型（`assets/weapons/vm-carbine*`、`vm-arm*`），换弹是左手离开护木、整把枪下沉再抬起；其余内容不变。见 `src/viewmodel.mjs`。
+PAC-9 步枪、手套、袖子和它们的开火、换弹动作（`assets/reference-viewmodel.json.gz`、`assets/pac9-detail.json`、`assets/recoil.*`、`assets/reload.*`、`assets/reload-empty.*`）是外部素材，不属于本项目，放在这里只为了运行这个游戏，请不要另行取用或分发。
+
+缺少这些文件时，游戏改用本项目自己制作的 PAC-9 步枪和左手模型（`assets/weapons/vm-carbine*`、`vm-arm*`），换弹是左手离开护木、整把枪下沉再抬起；其余内容不变。见 `src/viewmodel.mjs`。
 
 ## 群核 Lux3D 生成的模型
 

@@ -85,10 +85,9 @@ function muzzleRig(root){
  const light=new T.PointLight('#ffa657',0,.9,2);muzzle.add(light);
  return {muzzle,flash,light};
 }
-// PAC-9 as the public repository carries it: our own model (assets/weapons/vm-carbine.* and vm-arm.*, built part by part and
-// baked into one set of maps each; THIRD_PARTY_NOTICES.md). The carbine, gloves, sleeves and motions the game was first
-// built round are a privately supplied asset that cannot be redistributed (THIRD_PARTY_NOTICES.md); when they are absent
-// this one takes their place. It has the same frame (bore along -z through the origin, pistol grip near z = +.05, muzzle
+// The second PAC-9: our own model (assets/weapons/vm-carbine.* and vm-arm.*, built part by part and baked into one set
+// of maps each). The carbine, gloves, sleeves and motions the game was first built round are an external asset
+// (THIRD_PARTY_NOTICES.md); when their files are absent this one takes their place. It has the same frame (bore along -z through the origin, pistol grip near z = +.05, muzzle
 // at z = -.531, the sight's axis .069 above the bore) and the same interface. Its motions are made here: recoil is a
 // kick of the whole weapon; on reload the carbine cants so its well shows, the magazine (its own piece) drops out, a
 // fresh one comes up and seats, and the carbine comes back. After an empty magazine it ends with the bolt going home.
@@ -134,7 +133,7 @@ async function carbine(onProgress){
  return {host,root,muzzle,flash,light,basePose:{p:new T.Vector3(),q:new T.Quaternion()},
   play(name){if(!DURATION[name])return;action=name;actionTime=0;pose(name,0);},
   update(dt){if(!action)return;actionTime+=dt;pose(action,actionTime);if(actionTime>=DURATION[action]){action=null;rest();}},
-  showHands(value){arm.visible=value;},reset(){action=null;rest();},get action(){return action;},get actionTime(){return actionTime;},handCount:A?1:0,source:'PAC-9 carbine and left arm, own models (public repository)',standIn:true,
+  showHands(value){arm.visible=value;},reset(){action=null;rest();},get action(){return action;},get actionTime(){return actionTime;},handCount:A?1:0,source:'PAC-9 carbine and left arm, own models (used when the main viewmodel files are absent)',standIn:true,
   // for the armory: the model's kind and material (it gives generated weapons a finer colour map and a grain), and where its callouts point
   model:{kind:CARBINE,material:M.material},
   sample(name,time){if(DURATION[name])pose(name,time);}};
@@ -176,8 +175,8 @@ function standIn(onProgress){
   sample(name,time){if(DURATION[name])pose(name,time);}};
 }
 
-// The carbine, gloves and sleeves the game was first built round are a privately supplied asset (not in the public
-// repository); without them the repository's own carbine is used. Their animations include
+// The carbine, gloves and sleeves the game was first built round are an external asset (THIRD_PARTY_NOTICES.md);
+// without its files the repository's own carbine is used. Their animations include
 // vertex deformation for fingers and sleeves; transform-only export loses those poses.
 export async function loadViewmodel(onProgress=()=>{}){
  if((await fetch('assets/reference-viewmodel.json.gz',{method:'HEAD'})).status===404){
@@ -253,5 +252,5 @@ export async function loadViewmodel(onProgress=()=>{}){
  function play(name){action=name;actionTime=0;pose(clips[name],0);}
  function update(dt){if(!action)return;actionTime+=dt;const c=clips[action];pose(c,actionTime);if(actionTime>=c.duration){action=null;restore();pose(clips.recoil,0);}}
  restore();pose(clips.recoil,0);
- return {host,root,muzzle,flash,light,basePose,play,update,showHands(value){root.traverse(o=>{if(o.isMesh&&o.material?.name==='glove_fabric')o.visible=value;});},reset(){action=null;restore();pose(clips.recoil,0);},get action(){return action;},get actionTime(){return actionTime;},handCount,source:'privately supplied carbine and hands (not redistributed)',sample(name,time){pose(clips[name],time);}};
+ return {host,root,muzzle,flash,light,basePose,play,update,showHands(value){root.traverse(o=>{if(o.isMesh&&o.material?.name==='glove_fabric')o.visible=value;});},reset(){action=null;restore();pose(clips.recoil,0);},get action(){return action;},get actionTime(){return actionTime;},handCount,source:'PAC-9 carbine and hands (external asset, see THIRD_PARTY_NOTICES.md)',sample(name,time){pose(clips[name],time);}};
 }

@@ -6,17 +6,8 @@ url.json
 .env.*
 verification/
 
-# Not redistributable: the PAC-9 carbine, gloves, sleeves and their motions.
-# When these are absent the game uses the carbine and arm in assets/weapons (src/viewmodel.mjs).
-assets/reference-viewmodel.json.gz
-assets/pac9-detail.json
+# Working record of the PAC-9 viewmodel export (not used by the game)
 assets/provenance.json
-assets/recoil.json
-assets/recoil.bin.gz
-assets/reload.json
-assets/reload.bin.gz
-assets/reload-empty.json
-assets/reload-empty.bin.gz
 
 # README review artefacts (the hero image itself is kept)
 assets/readme/page/
