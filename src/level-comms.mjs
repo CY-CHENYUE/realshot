@@ -77,7 +77,7 @@ export function lineFor(e,ctx={}){
  }
 }
 
-export function createComms({sound,root,base='/assets/voice/',enabled=true}={}){
+export function createComms({sound,root,base='assets/voice/',enabled=true}={}){
  const now=()=>performance.now()/1000,buffers={},missing=[],log=[];
  let queue=[],cur=null,last={},said=new Set(),chain=null,loaded=false;
  if(root){root.innerHTML='<i class="sig" aria-hidden="true"><u></u><u></u><u></u><u></u></i><b></b><span></span>';root.querySelector('b').textContent=SPEAKER.name;}

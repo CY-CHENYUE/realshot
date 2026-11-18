@@ -39,7 +39,7 @@ function handTexture(kind,geometry=null){
  const t=new T.CanvasTexture(c);t.colorSpace=T.SRGBColorSpace;t.anisotropy=4;return t;
 }
 // the generated hand (assets/fx/sky-palm.*, built by build-palm.mjs from the Lux3D model): already in hand space
-export async function loadSkyPalm(base='/assets/fx/'){
+export async function loadSkyPalm(base='assets/fx/'){
  const [meta,bin]=await Promise.all([fetch(`${base}sky-palm.json?v=2`).then(r=>{if(!r.ok)throw new Error(`sky-palm.json ${r.status}`);return r.json();}),fetch(`${base}sky-palm.bin?v=2`).then(r=>{if(!r.ok)throw new Error(`sky-palm.bin ${r.status}`);return r.arrayBuffer();})]);
  const n=meta.vertices,g=new T.BufferGeometry();
  g.setAttribute('position',new T.BufferAttribute(new Float32Array(bin,meta.position,n*3),3));g.setAttribute('normal',new T.BufferAttribute(new Int8Array(bin,meta.normal,n*3),3,true));

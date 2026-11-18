@@ -45,7 +45,7 @@ export const LAYOUT=Object.freeze([
  ['floodlight',452,8.7,-175],['outpost-cabin',459,9.4,-90],['fuel-barrels',466.5,3.6,22],['fuel-barrels',468,-3.7,-18],
 ]);
 
-export async function loadPropModels(base='/assets/props/',kinds=PROP_KINDS){
+export async function loadPropModels(base='assets/props/',kinds=PROP_KINDS){
  const loader=new T.TextureLoader(),tex=async(url,srgb)=>{const t=await loader.loadAsync(url);t.flipY=false;t.colorSpace=srgb?T.SRGBColorSpace:T.NoColorSpace;t.anisotropy=4;return t;};
  const out={};
  await Promise.all(kinds.map(async kind=>{

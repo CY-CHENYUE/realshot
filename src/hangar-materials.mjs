@@ -7,7 +7,7 @@ export function createHangarMaterials(){
  let ready=false,disposed=false;
  async function prepare(){
   if(disposed)throw Error('Hangar materials have been disposed');
-  const loader=new T.TextureLoader();await Promise.all([['map','deck-albedo.jpg'],['normalMap','deck-normal.jpg'],['roughnessMap','deck-roughness.jpg'],['metalnessMap','deck-metalness.jpg']].map(async([key,file])=>{const t=await loader.loadAsync('/assets/hangar/textures/'+file);t.wrapS=t.wrapT=T.RepeatWrapping;t.repeat.set(.5,.5);t.anisotropy=8;t.colorSpace=key==='map'?T.SRGBColorSpace:T.NoColorSpace;owned.add(t);if(disposed)t.dispose();else deck[key]=t;}));
+  const loader=new T.TextureLoader();await Promise.all([['map','deck-albedo.jpg'],['normalMap','deck-normal.jpg'],['roughnessMap','deck-roughness.jpg'],['metalnessMap','deck-metalness.jpg']].map(async([key,file])=>{const t=await loader.loadAsync('assets/hangar/textures/'+file);t.wrapS=t.wrapT=T.RepeatWrapping;t.repeat.set(.5,.5);t.anisotropy=8;t.colorSpace=key==='map'?T.SRGBColorSpace:T.NoColorSpace;owned.add(t);if(disposed)t.dispose();else deck[key]=t;}));
   if(disposed)return {ready:false};
   // Preserve the real wear/roughness relationships, with a restrained cool
   // metal palette matching the new hull rather than uniformly rusty brown.

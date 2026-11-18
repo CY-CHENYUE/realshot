@@ -152,7 +152,7 @@ export function createDefenseWorldV3({environment='hangar',combatReadability=tru
    }
   }const appearance=readable?applyCombatAppearance(model,role):null;model.updateMatrixWorld(true);return {model,bounds:new T.Box3().setFromObject(model),normalPreparation,appearance};
  }
- async function prepareAssets({enemyUrl='/assets/orbital/interceptor.glb',coreUrl='/assets/orbital/phase-core.glb'}={}){
+ async function prepareAssets({enemyUrl='assets/orbital/interceptor.glb',coreUrl='assets/orbital/phase-core.glb'}={}){
   const [enemy,core]=await Promise.all([loadModel(enemyUrl,{extent:industrial?1.25:1.02,role:'enemy'}),snowScene?null:loadModel(coreUrl,{height:industrial?1.35:1.4,role:'protector'}),surfacePack.prepare?.()]);for(const a of [...actors.values()])removeActor(a);
   enemyTemplate=enemy.model;damageTemplateAudit=prepareEnemyDamageParts(enemyTemplate);buildProgramAnchor();
   if(snowScene){beacon=createRescueBeacon();coreModel=beacon.group;}else coreModel=core.model;
@@ -161,7 +161,7 @@ export function createDefenseWorldV3({environment='hangar',combatReadability=tru
   if(environment==='hangar'||industrial){
    const placements=station.inspection().propsPlacement||[];
    await Promise.all(placements.map(async p=>{
-    const id=p.role==='electrical cabinet'?'utility_box_02':p.role==='metal toolbox'?'metal_toolbox':'portable_generator',url='/assets/hangar/'+id+'.glb',gltf=await new GLTFLoader().loadAsync(url),model=gltf.scene;
+    const id=p.role==='electrical cabinet'?'utility_box_02':p.role==='metal toolbox'?'metal_toolbox':'portable_generator',url='assets/hangar/'+id+'.glb',gltf=await new GLTFLoader().loadAsync(url),model=gltf.scene;
     model.name='service prop / '+p.id;model.position.fromArray(p.position);model.rotation.fromArray(p.rotation||[0,0,0]);model.rotation.y+=Math.PI;model.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true;for(const m of Array.isArray(o.material)?o.material:[o.material])if(m.map)m.map.anisotropy=8;}});propLayer.add(model);model.updateMatrixWorld(true);
     const bounds=new T.Box3().setFromObject(model);station.collisionBoxes.push({id:model.name,name:model.name,objectName:model.name,min:bounds.min.toArray(),max:bounds.max.toArray()});propModels.push(model);provenance.models.push({role:p.role,source:'Poly Haven CC0; original photographic PBR, true dimensions retained',url,bounds:bounds.min.toArray().concat(bounds.max.toArray())});
    }));

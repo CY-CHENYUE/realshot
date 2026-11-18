@@ -222,7 +222,7 @@ export function createEnclosureArt({materials={},depthCues=false}={}){
  box('starboard rear / protected conduit',[1.8,5.8,75],[89.5,62,128],m.rubber,.3);
  cable('starboard rear / connected overhead loop',[[90,62,165],[83,59,174],[82,48,176],[86,37,168]],.65,m.rubber);
  assemblies.push({id:'starboard-controls',role:'Supported thermal exchanger and control head, open foreground tool cradle, rear service mast',sourceBounds:{x:[78.2,97.2],y:[-67,67],z:[80.4,177]}});
- const cadPropPlacements=[{id:'starboard / maintained CC0 toolbox',role:'Photographic metal toolbox in supported side workbench cradle',url:'/assets/hangar/metal_toolbox.glb',centerCAD:[87.8,-46,117.4],heightMM:22,rotationCAD:[0,0,Math.PI/2],maximumSizeMM:[17.0,35.0,22.0],supportTopCAD:106.4,note:'Fit original GLB dimensions inside this bounded cradle. Preserve UV/maps; colour adjustment belongs to integrator. No invisible central prop collider.'}];
+ const cadPropPlacements=[{id:'starboard / maintained CC0 toolbox',role:'Photographic metal toolbox in supported side workbench cradle',url:'assets/hangar/metal_toolbox.glb',centerCAD:[87.8,-46,117.4],heightMM:22,rotationCAD:[0,0,Math.PI/2],maximumSizeMM:[17.0,35.0,22.0],supportTopCAD:106.4,note:'Fit original GLB dimensions inside this bounded cradle. Preserve UV/maps; colour adjustment belongs to integrator. No invisible central prop collider.'}];
  for(const{material,parts}of batches.values()){
   const geometry=mergeGeometries(parts,false);for(const part of parts)part.dispose();geometries.add(geometry);
   const mesh=new T.Mesh(geometry,material);mesh.name=`CAD side equipment / ${material.name||serial++}`;mesh.castShadow=mesh.receiveShadow=true;root.add(mesh);

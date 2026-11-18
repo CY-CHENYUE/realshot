@@ -120,10 +120,10 @@ function standIn(onProgress){
 // The carbine, gloves and sleeves are a privately supplied asset (not in the public repository). Animations include
 // vertex deformation for fingers and sleeves; transform-only export loses those poses.
 export async function loadViewmodel(onProgress=()=>{}){
- if((await fetch('/assets/reference-viewmodel.json.gz',{method:'HEAD'})).status===404){console.info('RealShot: carbine and hand assets are not present; using the stand-in carbine.');return standIn(onProgress);}
- const data=await unpack('/assets/reference-viewmodel.json.gz','json');
+ if((await fetch('assets/reference-viewmodel.json.gz',{method:'HEAD'})).status===404){console.info('RealShot: carbine and hand assets are not present; using the stand-in carbine.');return standIn(onProgress);}
+ const data=await unpack('assets/reference-viewmodel.json.gz','json');
  const root=await new T.ObjectLoader().parseAsync(data);const nodes=[];root.traverse(o=>nodes.push(o));
- const detail=await fetch('/assets/pac9-detail.json').then(r=>r.json());
+ const detail=await fetch('assets/pac9-detail.json').then(r=>r.json());
  const basePose={p:new T.Vector3().fromArray(root.position.toArray()),q:root.quaternion.clone()};
  const inverseBase=basePose.q.clone().invert();const rests=nodes.map(o=>({p:o.position.clone(),q:o.quaternion.clone(),s:o.scale.clone(),visible:o.visible}));
  root.position.set(0,0,0);root.quaternion.identity();
@@ -160,7 +160,7 @@ export async function loadViewmodel(onProgress=()=>{}){
  const light=new T.PointLight('#ffa657',0,.9,2);muzzle.add(light);
  const clips={};let loaded=0;
  await Promise.all(['recoil','reload','reload-empty'].map(async name=>{
-  const [meta,bytes]=await Promise.all([fetch(`/assets/${name}.json`).then(r=>{if(!r.ok)throw new Error('动作元数据读取失败');return r.json();}),unpack(`/assets/${name}.bin.gz`)]);
+  const [meta,bytes]=await Promise.all([fetch(`assets/${name}.json`).then(r=>{if(!r.ok)throw new Error('动作元数据读取失败');return r.json();}),unpack(`assets/${name}.bin.gz`)]);
   const buffer=new Float32Array(bytes);if(buffer.length!==meta.frames*meta.stride||meta.nodeCount!==nodes.length)throw new Error('动作文件与模型结构不匹配');
   clips[name]={...meta,buffer};onProgress(++loaded,3);
  }));

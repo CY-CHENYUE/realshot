@@ -146,7 +146,7 @@ const DROP_SCALE=1.55;
 const RIM=[2.6*Math.sin(Math.PI*.42),2.6*Math.cos(Math.PI*.42)-1.2],CHUTE_Y=7.4,CHUTE_TOP=CHUTE_Y+1.4,CHUTE_AWAY=4.5,CRATE_TOP=.78*DROP_SCALE;
 function brandPlate(){
  const m=new T.MeshStandardMaterial({name:'drop case / brand plate',color:'#ffffff',roughness:.42,metalness:.1,emissive:new T.Color('#ffffff'),emissiveIntensity:.75});
- if(typeof document!=='undefined')new T.TextureLoader().load('/assets/brand/aholo-manycore.png',t=>{t.colorSpace=T.SRGBColorSpace;t.anisotropy=8;m.map=t;m.emissiveMap=t;m.needsUpdate=true;},undefined,()=>{m.color.set('#0b0c0e');m.emissiveIntensity=0;});
+ if(typeof document!=='undefined')new T.TextureLoader().load('assets/brand/aholo-manycore.png',t=>{t.colorSpace=T.SRGBColorSpace;t.anisotropy=8;m.map=t;m.emissiveMap=t;m.needsUpdate=true;},undefined,()=>{m.color.set('#0b0c0e');m.emissiveIntensity=0;});
  else m.color.set('#0b0c0e');
  return m;
 }

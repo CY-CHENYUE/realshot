@@ -4,10 +4,10 @@
 // cue times are film seconds. intro: she starts over black; cuts at 4.55 (a trooper breaks out), 7.5 (the army), 10.4 (the mothership), 13.0 (the soldier)
 // outro: cuts at 4.1 (the beam's pulse drops the army) and 6.7 (the soldier and the helicopter); her second line waits for the last shot
 export const FILMS={
- intro:{src:'/assets/cine/intro.mp4',lines:[['brief1',.3],['brief2',5.6],['brief3',10.7]],titleAt:16.6,tail:2.6,volume:.5,eyebrow:'OPERATION SNOWLINE · 群峰救援线',title:'雪线行动'},
- outro:{src:'/assets/cine/outro.mp4',lines:[['out1',.5],['out2',6.9]],titleAt:9.9,tail:2.4,volume:.5,eyebrow:'MISSION COMPLETE',title:'信标已点亮'},
+ intro:{src:'assets/cine/intro.mp4',lines:[['brief1',.3],['brief2',5.6],['brief3',10.7]],titleAt:16.6,tail:2.6,volume:.5,eyebrow:'OPERATION SNOWLINE · 群峰救援线',title:'雪线行动'},
+ outro:{src:'assets/cine/outro.mp4',lines:[['out1',.5],['out2',6.9]],titleAt:9.9,tail:2.4,volume:.5,eyebrow:'MISSION COMPLETE',title:'信标已点亮'},
 };
-const MANIFEST='/assets/cine/films.json';
+const MANIFEST='assets/cine/films.json';
 export function createCine({root,comms,sound}){
  const video=root.querySelector('video'),eyebrow=root.querySelector('.cine-title p'),title=root.querySelector('.cine-title h2'),ok={};let run=null;
  async function probe(){

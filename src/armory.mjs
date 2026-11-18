@@ -54,7 +54,7 @@ let renderer,scene,camera,target,half,half2,blur,soft,post,quad,postScene,postCa
 // the teardown film of a weapon: the model the game uses, taken apart in the studio it was built in (rendered ahead; see
 // assets/cine/NOTICE.md). T or the button under the figures plays it; while the row turns by itself it plays once in each
 // stay of that weapon.  ?film=0 leaves it out; a recording (?capture=1) never plays it.
-const FILM={minigun:'/assets/cine/vx6-teardown.mp4'},film={on:false,ready:false,video:null,stay:-1};
+const FILM={minigun:'assets/cine/vx6-teardown.mp4'},film={on:false,ready:false,video:null,stay:-1};
 const items=[],state={t:0,c:0,tween:null,auto:LOOP>0,period:0,shown:-1,settled:0,drag:0,dragging:false,ready:false,notes:null,lean:false,ss:0};
 const view={w:1,h:1};
 
@@ -152,11 +152,11 @@ void main(){
  // VX-6 and RK-3: the generated models the level holds (level-arms.mjs), barrel cluster and warhead included. Seen this
  // close they get a relief map made from the fine structure of their own colour map (seams, vents, lettering), so the
  // light picks those out instead of sliding over a flat picture.
- const loader=new T.TextureLoader(),relief=async kind=>{try{const t=await loader.loadAsync(`/assets/weapons/${kind}-relief.jpg`);t.flipY=false;t.colorSpace=T.NoColorSpace;return t;}catch{return null;}};
+ const loader=new T.TextureLoader(),relief=async kind=>{try{const t=await loader.loadAsync(`assets/weapons/${kind}-relief.jpg`);t.flipY=false;t.colorSpace=T.NoColorSpace;return t;}catch{return null;}};
  // ...and a colour map twice as fine (the original enlarged with a sharp filter, edges tightened), and a grain in the
  // paint: small unevenness in how rough and which way the surface is, the size of a few pixels, which is what a flat
  // area of a real painted or cast part shows from this close. The grain fades out where it would be smaller than a pixel.
- const FINE=params.get('fine')!=='0',sharp=async kind=>{if(!FINE)return null;try{const t=await loader.loadAsync(`/assets/weapons/${kind}-albedo-fine.jpg`);t.flipY=false;t.colorSpace=T.SRGBColorSpace;return t;}catch{return null;}};
+ const FINE=params.get('fine')!=='0',sharp=async kind=>{if(!FINE)return null;try{const t=await loader.loadAsync(`assets/weapons/${kind}-albedo-fine.jpg`);t.flipY=false;t.colorSpace=T.SRGBColorSpace;return t;}catch{return null;}};
  const [reliefM,reliefR,sharpM,sharpR]=await Promise.all([relief(ARMS.minigun),relief(ARMS.rpg),sharp(ARMS.minigun),sharp(ARMS.rpg)]);
  const grain=m=>{m.onBeforeCompile=sh=>{sh.fragmentShader=sh.fragmentShader.replace('#include <common>',`#include <common>
 float gHash(vec2 p){p=fract(p*vec2(.1031,.1030));p+=dot(p,p.yx+33.33);return fract((p.x+p.y)*p.x);}

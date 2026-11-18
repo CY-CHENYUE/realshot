@@ -3,11 +3,25 @@
 <head>
  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0e1418">
  <title>REALSHOT · 雪线行动</title>
- <link rel="stylesheet" href="/src/level.css">
- <script type="importmap">{"imports":{"three":"/three/build/three.module.js","three/addons/":"/three/examples/jsm/"}}</script>
+ <link rel="stylesheet" href="src/level.css">
+ <script type="importmap">{"imports":{"three":"./three/build/three.module.js","three/addons/":"./three/examples/jsm/"}}</script>
 </head>
 <body data-screen="loading">
  <canvas id="view" aria-label="雪线行动 3D 关卡"></canvas>
+ <div id="boot" role="status">
+  <p class="eyebrow">OPERATION SNOWLINE · 群峰救援线</p>
+  <h1>雪线行动</h1>
+  <div class="boot-bar"><i id="boot-fill"></i></div>
+  <p id="boot-label">正在载入</p>
+  <p class="boot-note">第一次打开要下载约 64 MB 的模型和声音，之后会快很多。请用电脑上的 Chrome 或 Edge 打开，用键盘和鼠标操作。</p>
+ </div>
+ <script>
+ // shown until level.mjs switches the screen from "loading" to "title"; counts what the browser has fetched so far
+ (()=>{const TOTAL=64e6,fill=document.getElementById('boot-fill'),label=document.getElementById('boot-label');let got=0;
+  const show=()=>{fill.style.width=Math.min(99,got/TOTAL*100)+'%';label.textContent=`正在载入 · 已下载 ${(got/1048576).toFixed(0)} MB`;};
+  try{const po=new PerformanceObserver(l=>{for(const e of l.getEntries())got+=e.encodedBodySize||0;if(document.body.dataset.screen==='loading')show();else po.disconnect();});po.observe({type:'resource',buffered:true});}catch{}
+ })();
+ </script>
  <div id="bars" aria-hidden="true"><i></i><i></i></div>
  <div id="hud" hidden>
   <div id="compass" aria-hidden="true"><div id="compass-strip"></div><i class="needle"></i></div>
@@ -51,13 +65,13 @@
    <button id="start" class="primary" disabled><span id="load-label">载入中</span></button>
    <div class="keys"><span><kbd>WASD</kbd> 移动</span><span><kbd>Shift</kbd> 冲刺</span><span><kbd>Space</kbd> 跳跃</span><span><kbd>鼠标</kbd> 视角</span><span><kbd>左键</kbd> 射击</span><span><kbd>右键</kbd> 瞄准</span><span><kbd>R</kbd> 装填</span><span><kbd>1-3</kbd>/<kbd>Q</kbd>/滚轮 换武器</span><span><kbd>4</kbd> 天锤导弹（击杀充能）</span><span><kbd>E</kbd> 空投 / 上下雪地车</span></div>
    <p class="hint">连斩越多，天锤充能越快 · 射击山壁上的雪檐引发雪崩 · 开雪地车撞穿人群 · 留意天上的金色徽章。</p>
-   <nav class="links"><a id="replay-intro" href="#" hidden>开场简报 ▶</a><a href="/armory.html" target="_blank" rel="noopener">军械库 ↗</a></nav>
+   <nav class="links"><a id="replay-intro" href="#" hidden>开场简报 ▶</a><a href="armory.html" target="_blank" rel="noopener">军械库 ↗</a></nav>
   </div>
  </section>
  <section id="pause" class="screen dim" hidden><div class="sheet"><p class="eyebrow">PAUSED</p><h2>行动暂停</h2><button id="resume" class="primary"><span>继续</span></button><button id="restart" class="ghost">从头开始</button><label class="vol">音量 <input id="volume" type="range" min="0" max="100" value="70"></label></div></section>
  <section id="down" class="screen dim" hidden><div class="sheet"><p class="eyebrow">DOWN</p><h2>你倒下了</h2><p id="down-copy">从最近的检查点继续。</p><button id="respawn" class="primary"><span>从检查点继续</span></button></div></section>
  <section id="won" class="screen dim" hidden><div class="sheet"><p class="eyebrow">MISSION COMPLETE</p><h2>信标已点亮</h2><p>救援直升机已锁定你的位置。</p><div class="stats"><div><b id="st-time">0:00</b><span>用时</span></div><div><b id="st-kills">0</b><span>击杀</span></div><div><b id="st-combo">0</b><span>最高连斩</span></div><div><b id="st-acc">0%</b><span>命中率</span></div><div><b id="st-score">0</b><span>得分</span></div></div><button id="again" class="primary"><span>再来一次</span></button></div></section>
  <div id="fatal" hidden><h2>关卡未能载入</h2><p></p></div>
- <script type="module" src="/src/level.mjs"></script>
+ <script type="module" src="src/level.mjs"></script>
 </body>
 </html>

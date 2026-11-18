@@ -95,7 +95,7 @@ const BEND_POS='{vec2 b=bendAt(position.y);transformed=bendX(bendX(transformed,u
 const NO_JOINT=new T.Vector4(-100,0,-100,0);
 // z of the limb's axis at a height: the pivot sits in the middle of the joint, not on the part's origin
 function axisZ(g,y){const p=g.attributes.position;let lo=1e9,hi=-1e9;for(let i=0;i<p.count;i++){if(Math.abs(p.getY(i)-y)>.03)continue;const z=p.getZ(i);if(z<lo)lo=z;if(z>hi)hi=z;}return hi>=lo?(lo+hi)/2:0;}
-export async function loadCrowdModels(base='/assets/crowd/',kinds=CROWD_KINDS){
+export async function loadCrowdModels(base='assets/crowd/',kinds=CROWD_KINDS){
  const loader=new T.TextureLoader(),tex=async(url,srgb)=>{const t=await loader.loadAsync(url);t.flipY=false;t.colorSpace=srgb?T.SRGBColorSpace:T.NoColorSpace;t.anisotropy=4;return t;};
  const out={};
  await Promise.all(kinds.map(async kind=>{

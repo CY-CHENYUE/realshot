@@ -27,7 +27,7 @@ const discTexture=()=>canvasTexture(64,(g,s)=>{const r=g.createRadialGradient(s/
 const snowMaterial=name=>new T.MeshStandardMaterial({name,color:'#eef3f9',roughness:.94,metalness:0});
 
 export const SET_KINDS=['snowcat','dreadnought'];
-export const loadSetModels=(base='/assets/props/')=>loadPropModels(base,SET_KINDS);
+export const loadSetModels=(base='assets/props/')=>loadPropModels(base,SET_KINDS);
 
 // ---------- cornices: a loaded drift of wind-packed snow on the valley wall ----------
 // how much bigger than the rules' node the drawn shelf is

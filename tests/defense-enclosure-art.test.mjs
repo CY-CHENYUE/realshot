@@ -30,7 +30,7 @@ test('all equipment is supported at the finite CAD side floor and the reserved t
  const kit=createEnclosureArt();try{
   const report=kit.inspection(),bounds=new T.Box3().setFromObject(kit.root);assert.ok(bounds.min.z>=80.39);assert.ok(bounds.min.x>=-97.5);assert.ok(bounds.max.x<=97.5);
   for(const side of[-1,1])assert.ok(kit.localSolids.some(b=>b.id.includes('maintenance deck')&&b.min[0]*side>0&&Math.abs(b.min[2]-80.5)<.001));
-  const prop=report.cadPropPlacements[0];assert.equal(prop.url,'/assets/hangar/metal_toolbox.glb');assert.equal(prop.centerCAD[2]-prop.heightMM/2,prop.supportTopCAD);assert.ok(Math.abs(prop.centerCAD[0])-prop.maximumSizeMM[0]/2>55);
+  const prop=report.cadPropPlacements[0];assert.equal(prop.url,'assets/hangar/metal_toolbox.glb');assert.equal(prop.centerCAD[2]-prop.heightMM/2,prop.supportTopCAD);assert.ok(Math.abs(prop.centerCAD[0])-prop.maximumSizeMM[0]/2>55);
  }finally{kit.dispose();}
 });
 

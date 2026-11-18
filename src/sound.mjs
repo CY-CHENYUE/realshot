@@ -16,7 +16,7 @@ export class GameSound{
   this.input=c.createGain();const compressor=c.createDynamicsCompressor();compressor.threshold.value=-12;compressor.knee.value=8;compressor.ratio.value=4;compressor.attack.value=.002;compressor.release.value=.12;
   this.master=c.createGain();this.master.gain.value=this.volume;this.input.connect(compressor).connect(this.master);this.master.connect(c.destination);
   this.monitor=c.createMediaStreamDestination();this.master.connect(this.monitor);this.analyser=c.createAnalyser();this.analyser.fftSize=512;this.master.connect(this.analyser);
-  await Promise.all(Object.entries(FILES).map(async([key,file])=>{const r=await fetch(`/assets/audio/${file}.wav`);if(!r.ok)throw new Error(`音效未能读取：${file}`);this.buffers[key]=await c.decodeAudioData(await r.arrayBuffer());}));
+  await Promise.all(Object.entries(FILES).map(async([key,file])=>{const r=await fetch(`assets/audio/${file}.wav`);if(!r.ok)throw new Error(`音效未能读取：${file}`);this.buffers[key]=await c.decodeAudioData(await r.arrayBuffer());}));
  }
  setVolume(value){this.volume=Math.max(0,Math.min(1,Number(value)||0));if(this.master)this.master.gain.setTargetAtTime(this.volume,this.context.currentTime,.025);}
  unlock(){if(this.enabled&&this.context)void this.context.resume().catch(()=>{});}

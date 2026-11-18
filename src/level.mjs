@@ -679,7 +679,7 @@ async function init(){
  resize();buildCompass();
  $('load-label').textContent='载入装备';
  let soldiers=null,propModels=null,setModels=null,arms=null,palmModel=null;
- [weapon,,,soldiers,propModels,setModels,arms,palmModel]=await Promise.all([loadViewmodel((n,t)=>{$('load-label').textContent=`装备动作 ${n} / ${t}`;}),sound.prepare(),world.prepareAssets({enemyUrl:'/assets/industrial-r10/interceptor.glb'}),
+ [weapon,,,soldiers,propModels,setModels,arms,palmModel]=await Promise.all([loadViewmodel((n,t)=>{$('load-label').textContent=`装备动作 ${n} / ${t}`;}),sound.prepare(),world.prepareAssets({enemyUrl:'assets/industrial-r10/interceptor.glb'}),
   // r26: the generated soldiers; without them (?soldiers=box, or a missing file) the crowd stays the r24 box troops
   params.get('soldiers')==='box'?null:loadCrowdModels().catch(e=>{console.warn('soldier models unavailable',e);return null;}),
   // r26: the outposts along the route (level-props.mjs); ?props=off leaves the valley empty

@@ -201,6 +201,13 @@ body.empty .ammo strong{color:var(--red)}
 .screen{position:fixed;inset:0;display:flex;align-items:center;justify-content:flex-start}
 .screen.dim{justify-content:center;background:rgba(6,10,13,.55);backdrop-filter:blur(3px)}
 .screen[hidden]{display:none}
+/* loading screen: the first visit downloads tens of MB, so say so instead of showing a blank page */
+#boot{display:none;position:fixed;inset:0;z-index:30;flex-direction:column;justify-content:center;padding-left:7vw;background:radial-gradient(120% 90% at 30% 40%,#17212b 0%,#0e1418 62%)}
+body[data-screen="loading"] #boot{display:flex}
+.boot-bar{width:min(420px,70vw);height:3px;background:rgba(255,255,255,.16);margin:10px 0 14px}
+.boot-bar i{display:block;width:0;height:100%;background:var(--amber);transition:width .25s linear}
+#boot-label{margin:0 0 10px;font-size:14px;letter-spacing:.08em;font-variant-numeric:tabular-nums}
+.boot-note{margin:0;max-width:460px;font-size:13px;line-height:1.7;color:var(--dim)}
 #title{background:linear-gradient(90deg,rgba(6,10,13,.72),rgba(6,10,13,.2) 55%,rgba(6,10,13,0))}
 .title-copy{margin-left:7vw;max-width:560px;text-shadow:var(--shadow)}
 .eyebrow{font-size:11px;letter-spacing:.38em;color:var(--dim);margin:0 0 14px}

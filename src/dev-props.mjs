@@ -12,7 +12,7 @@ scene.add(new T.HemisphereLight('#9fc0ea','#8a8f96',q.has('lamp')?.2:.9));
 const ground=new T.Mesh(new T.PlaneGeometry(120,120),new T.MeshStandardMaterial({color:'#dfe6ec',roughness:.9}));ground.rotation.x=-Math.PI/2;ground.receiveShadow=true;scene.add(ground);
 const pm=new T.PMREMGenerator(renderer),envScene=new T.Scene();envScene.background=new T.Color('#8aa4c4');scene.environment=pm.fromScene(envScene).texture;scene.environmentIntensity=q.has('lamp')?.1:.6;
 const camera=new T.PerspectiveCamera(30,innerWidth/innerHeight,.1,300);
-const kinds=q.get('kind')?[q.get('kind')]:PROP_KINDS,models=await loadPropModels('/assets/props/',kinds),yaw=Number(q.get('yaw'))||0;
+const kinds=q.get('kind')?[q.get('kind')]:PROP_KINDS,models=await loadPropModels('assets/props/',kinds),yaw=Number(q.get('yaw'))||0;
 // two rows: small props in front, large ones behind
 const small=kinds.filter(k=>models[k].meta.height<2),large=kinds.filter(k=>models[k].meta.height>=2);
 const layout=[];let x=-(small.length-1)*2;for(const k of small){layout.push([k,0,x,yaw]);x+=4;}x=-(large.length-1)*3.4;for(const k of large){layout.push([k,8,x,yaw]);x+=6.8;}

@@ -48,7 +48,7 @@ export function createEnclosureArtMaterials({combatReadability=true}={}){
    const results=await Promise.allSettled([
     base.prepare(),
     ...Object.entries(CHANNELS).map(async([slot,file])=>{
-     const texture=await loader.loadAsync('/assets/defense-v2/'+file);
+     const texture=await loader.loadAsync('assets/defense-v2/'+file);
      if(disposed){texture.dispose();return;}
      ownedTextures.add(texture);texture.name='Enclosure / Metal050C / '+slot;
      texture.wrapS=texture.wrapT=T.RepeatWrapping;texture.repeat.setScalar(1/TILE_METRES);

@@ -21,7 +21,7 @@ export function barrelCollar(material,segments=96){
  const g=new T.Mesh(geo,material);g.name='barrel collar';g.rotation.x=Math.PI/2;g.position.y=-.004;return g;
 }
 
-export async function loadWeaponModels(base='/assets/weapons/',kinds=Object.values(ARMS)){
+export async function loadWeaponModels(base='assets/weapons/',kinds=Object.values(ARMS)){
  const loader=new T.TextureLoader(),tex=async(url,srgb)=>{const t=await loader.loadAsync(url);t.flipY=false;t.colorSpace=srgb?T.SRGBColorSpace:T.NoColorSpace;t.anisotropy=8;return t;};
  const out={};
  await Promise.all(kinds.map(async kind=>{
